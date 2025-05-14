@@ -112,6 +112,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Author
 
 **CHINNAPAREDDY VENKATA KARTHIK REDDY** 
+
 LinkedIn: [https://www.linkedin.com/in/cvkr/](https://www.linkedin.com/in/cvkr/)  
 GitHub: [https://github.com/CEHCVKR](https://github.com/CEHCVKR)
 
