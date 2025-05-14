@@ -35,17 +35,17 @@ cd PyWall
 ```
 
 ### 2. Run the Script (Main Script)
-Run the `main.py` script to start the network scanning process. It will continuously scan the local network for new devices and block any unknown devices.
+Run the `PyWall.py` script to start the network scanning process. It will continuously scan the local network for new devices and block any unknown devices.
 
 ```bash
-python main.py
+python PyWall.py
 ```
 
 #### Modes:
 - **Smart Mode**: The default mode that only blocks unknown devices while allowing trusted devices.
 - **Strict Mode**: Blocks all devices in the network and only allows trusted devices.
 
-To use **Strict Mode**, change the `MODE` variable to `"STRICT"` in `main.py`.
+To use **Strict Mode**, change the `MODE` variable to `"STRICT"` in `PyWall.py`.
 
 ---
 
@@ -62,12 +62,12 @@ To use **Strict Mode**, change the `MODE` variable to `"STRICT"` in `main.py`.
 
 ## Unblocking Devices
 
-To unblock a device, use the `unblock.py` script. This will allow you to unblock a specific device for communication by adding it to the safe list.
+To unblock a device, use the `PyWall_Unblock.py` script. This will allow you to unblock a specific device for communication by adding it to the safe list.
 
 Run the script:
 
 ```bash
-python unblock.py
+python PyWall_Unblock.py
 ```
 
 The script will display a list of blocked devices, and you can choose the devices you want to unblock by their index.
