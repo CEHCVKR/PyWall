@@ -3,66 +3,66 @@
 
 ## Overview
 
-PyWall is a network security script designed to monitor your local network, block unauthorized devices, and provide mechanisms for unblocking trusted devices. It works in two modes, **Smart Mode** and **Strict Mode**, for different network protection levels.
+**PyWall** is a network security script designed to monitor your local network, block unauthorized devices, and provide mechanisms for unblocking trusted devices. It operates in two modes: **Smart Mode** and **Strict Mode**, catering to different levels of network protection.
 
-### Features:
-- **Smart Mode**: Automatically detects and blocks unknown devices based on IP and MAC address.
-- **Strict Mode**: Blocks all devices in the network and maintains a list of safe devices.
-- **ARP Cache Management**: Clears ARP cache before each scan to ensure fresh device detection.
-- **Block and Safe Lists**: Keeps track of blocked devices and safe devices that won't be blocked.
-- **Temporary Unblocking**: Allows temporary unblocking for a limited time (30 minutes).
+### Features
 
----
+- **Smart Mode**: Automatically detects and blocks unknown devices based on IP and MAC addresses.
+- **Strict Mode**: Blocks all devices in the network, maintaining a whitelist of safe devices.
+- **ARP Cache Management**: Clears ARP cache before each scan to ensure accurate device detection.
+- **Block and Safe Lists**: Maintains records of blocked and trusted devices.
+- **Temporary Unblocking**: Allows temporary unblocking of devices for a limited time (30 minutes).
+- **Comprehensive Firewall Rules**: Blocks all traffic (TCP/UDP and ICMP) for unauthorized devices.
 
 ## Setup
 
 ### Requirements
-- **Admin Privileges**: To modify the ARP cache and firewall settings, the script must be run as an administrator.
-- **Python 3.x**: Make sure Python 3.x is installed on your system.
-- **Windows OS**: The script uses `netsh` commands specific to Windows to block/unblock IP addresses.
-- **Firewall**: The script configures Windows Firewall to block IPs.
 
----
+- **Administrator Privileges**: Necessary for modifying ARP cache and firewall settings.
+- **Python 3.x**: Ensure Python 3.x is installed on your system.
+- **Windows OS**: Utilizes `netsh` commands specific to Windows for firewall management.
+- **Windows Firewall**: Configures Windows Firewall to block or unblock IP addresses.
 
 ## Getting Started
 
 ### 1. Download the Project
-Clone or download the repository to your local machine.
+
+Clone or download the repository to your local machine:
 
 ```bash
 git clone https://github.com/CEHCVKR/PyWall.git
 cd PyWall
 ```
 
-### 2. Run the Script (Main Script)
-Run the `PyWall.py` script to start the network scanning process. It will continuously scan the local network for new devices and block any unknown devices.
+### 2. Run the Main Script
+
+Execute the `PyWall.py` script to initiate network scanning. The script continuously scans the local network for new devices and blocks any unauthorized devices.
 
 ```bash
 python PyWall.py
 ```
 
 #### Modes:
-- **Smart Mode**: The default mode that only blocks unknown devices while allowing trusted devices.
-- **Strict Mode**: Blocks all devices in the network and only allows trusted devices.
 
-To use **Strict Mode**, change the `MODE` variable to `"STRICT"` in `PyWall.py`.
+- **Smart Mode**: Default mode that blocks only unknown devices, allowing trusted devices.
+- **Strict Mode**: Blocks all devices except those explicitly marked as trusted.
 
----
+To enable **Strict Mode**, set the `MODE` variable to `"STRICT"` in `PyWall.py`.
 
 ## How It Works
 
-1. **Scanning**: The script scans the network by pinging all devices in the subnet and building an ARP table.
-2. **Device Detection**: It checks the MAC addresses of devices connected to the network.
-   - If a device is unknown (not in the safe list), it gets blocked.
-3. **Lists**:
-   - **Blocked List** (`blocked_devices.txt`): Contains the devices that have been blocked.
-   - **Safe List** (`safe_devices.txt`): Contains the devices that are trusted and will not be blocked.
-
----
+1. **Network Scanning**: The script pings all devices in the subnet and builds an ARP table.
+2. **Device Detection**: It checks the MAC addresses of connected devices.
+   - If a device is not in the safe list, it gets blocked.
+3. **Firewall Rules**:
+   - Adds rules to block all traffic (TCP/UDP and ICMP) for unauthorized devices.
+4. **Lists Management**:
+   - **Blocked List** (`blocked_devices.txt`): Records of blocked devices.
+   - **Safe List** (`safe_devices.txt`): Records of trusted devices.
 
 ## Unblocking Devices
 
-To unblock a device, use the `PyWall_Unblock.py` script. This will allow you to unblock a specific device for communication by adding it to the safe list.
+To unblock a device, use the `PyWall_Unblock.py` script. This script allows you to unblock specific devices and add them to the safe list.
 
 Run the script:
 
@@ -70,50 +70,41 @@ Run the script:
 python PyWall_Unblock.py
 ```
 
-The script will display a list of blocked devices, and you can choose the devices you want to unblock by their index.
-
----
+The script will display a list of blocked devices. You can choose devices to unblock by their index.
 
 ## Use Cases
 
-- **Unknown Device Detection**: Automatically detects and blocks unauthorized devices from accessing your network.
-- **Network Protection**: Enhances network security by blocking devices that are not part of the trusted list.
-- **ARP Table Management**: Uses ARP table entries to identify devices, ensuring that only authorized devices are allowed.
-- **Firewall Management**: Blocks or unblocks devices by adding or removing firewall rules.
-
----
+- **Unauthorized Device Detection**: Automatically identifies and blocks unauthorized devices on your network.
+- **Enhanced Network Security**: Strengthens network security by allowing only trusted devices.
+- **ARP Table Management**: Utilizes ARP table entries for accurate device identification.
+- **Firewall Management**: Manages firewall rules to block or unblock devices effectively.
 
 ## Configuration
 
-### `main.py` Configuration
-- **MODE**: Set to `"SMART"` or `"STRICT"` depending on your desired level of security.
-- **BLOCKED_FILE**: The file that holds blocked devices' details (`blocked_devices.txt`).
-- **SAFE_DEVICES_FILE**: The file that holds the safe devices' details (`safe_devices.txt`).
-- **known_macs**: A set of MAC addresses for known, trusted devices (e.g., your own devices, routers).
+### `PyWall.py` Configuration
 
-### `unblock.py` Configuration
-- **BLOCKED_FILE**: The file that holds blocked devices' details.
-- **SAFE_DEVICES_FILE**: The file to add devices to the safe list.
+- **MODE**: Set to `"SMART"` or `"STRICT"` based on desired security level.
+- **BLOCKED_FILE**: File path for storing blocked devices (`blocked_devices.txt`).
+- **SAFE_DEVICES_FILE**: File path for storing safe devices (`safe_devices.txt`).
+- **known_macs**: Set of MAC addresses for known, trusted devices.
 
----
+### `PyWall_Unblock.py` Configuration
+
+- **BLOCKED_FILE**: File path for blocked devices.
+- **SAFE_DEVICES_FILE**: File path for safe devices.
 
 ## Notes
-- **Run as Administrator**: Some actions, like modifying the ARP cache or adding firewall rules, require administrator privileges.
-- **Regular Scanning**: The script scans the network every 5 seconds by default. Modify this interval if necessary in the code.
 
----
+- **Run as Administrator**: Required for actions like modifying ARP cache or adding firewall rules.
+- **Regular Scanning**: The script scans the network every 5 seconds by default. You can modify this interval in the code.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Author
 
-**CHINNAPAREDDY VENKATA KARTHIK REDDY** 
+**Chinnapareddy Venkata Karthik Reddy**
 
-LinkedIn: [https://www.linkedin.com/in/cvkr/](https://www.linkedin.com/in/cvkr/)  
-GitHub: [https://github.com/CEHCVKR](https://github.com/CEHCVKR)
-
----
+- LinkedIn: [https://www.linkedin.com/in/cvkr/](https://www.linkedin.com/in/cvkr/)
+- GitHub: [https://github.com/CEHCVKR](https://github.com/CEHCVKR)
