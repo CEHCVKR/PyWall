@@ -39,21 +39,28 @@ def is_admin():
         except subprocess.CalledProcessError:
             return False
 
+import subprocess
+
 def block_ip(ip):
     print(f"🚫 Blocking IP: {ip}")
-    in_rule = subprocess.run(
-        f'netsh advfirewall firewall add rule name="Block {ip}" dir=in action=block remoteip={ip}',
-        shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
-    out_rule = subprocess.run(
-        f'netsh advfirewall firewall add rule name="Block {ip}" dir=out action=block remoteip={ip}',
-        shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-    )
 
-    if in_rule.returncode == 0 and out_rule.returncode == 0:
-        print(f"✅ Successfully blocked {ip}")
+    commands = [
+        f'netsh advfirewall firewall add rule name="Block {ip} Inbound" dir=in action=block remoteip={ip}',
+        f'netsh advfirewall firewall add rule name="Block {ip} Outbound" dir=out action=block remoteip={ip}',
+        f'netsh advfirewall firewall add rule name="Block {ip} ICMP Inbound" protocol=ICMPv4 dir=in action=block remoteip={ip}',
+        f'netsh advfirewall firewall add rule name="Block {ip} ICMP Outbound" protocol=ICMPv4 dir=out action=block remoteip={ip}',
+    ]
+
+    success = True
+    for cmd in commands:
+        result = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if result.returncode != 0:
+            success = False
+
+    if success:
+        print(f"✅ Successfully blocked all traffic for {ip}")
     else:
-        print(f"❌ Failed to block {ip}. You may need to run as administrator.")
+        print(f"❌ Failed to block some traffic for {ip}. You may need to run as administrator.")
 
 def get_default_gateway():
     result = subprocess.run("ipconfig /all", capture_output=True, text=True)
